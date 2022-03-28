@@ -24,7 +24,6 @@ def caseOFsix():
     turns += 1
     temp = int(input("You rolled a six, you get to roll again: "))
 
-
     if (temp == 6):
         if(turns < 2):
             return caseOFsix()
@@ -48,9 +47,9 @@ def caseOFsix():
 
 while(True):
     if(player1 > player2):
-            ahead = "Player 1"
+        ahead = "Player 1"
     else:
-            ahead = "Player 2"
+        ahead = "Player 2"
     if(checkWin(player1) or checkWin(player2)):
         print("Winner is: ", ahead)
         break
