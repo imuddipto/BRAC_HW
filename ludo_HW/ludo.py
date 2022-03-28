@@ -1,5 +1,6 @@
-winner=None
+ahead=None
 winFlag = 100
+turns =0
 
 player1=0
 player1_open=None
@@ -11,45 +12,47 @@ def checkWin(x):
         return True
 
 def caseOFsix():
-    global player1
+    global turns
     global player1_open
-    global player2
     global player2_open
-    if(i==0):
-        temp1=int(input("You rolled a six, you get another chance: "))
-        if(temp1==6):
-            temp2=int(input("You already rolled two sixes in a row, be careful: "))
-            if(temp2==6):
-                print("You rolled 3 sixes in a row,the other player gets a chance now")
+
+    if(i == 0):
+        player1_open = True
+    else:
+        player2_open = True
+
+    turns += 1
+    temp = int(input("You rolled a six, you get to roll again: "))
+
+
+    if (temp == 6):
+        if(turns < 2):
+            return caseOFsix()
+        elif(turns == 2):
+            if(temp==6):
+                print("Alas! You have rolled 3 consecutive sixes")
+                if player1_open is None:
+                    player1_open == False
+                elif player2_open is None:
+                    player2_open == False
+                turns = 0
                 return 0
             else:
-                if ( player1_open is None):
-                    player1_open = True
-                return 6+temp1+temp2
-        else:
-            if (player1_open is None):
-                player1_open = True
-            return 6+temp1
-    elif(i==1):
-        player2_open=False
-        temp3=int(input("You rolled a six, you get another chance: "))
-        if(temp3==6):
-            temp4=int(input("You already rolled two sixes in a row, be careful: "))
-            if(temp4==6):
-                print("You rolled 3 sixes in a row,the other player gets a chance now")
-                return 0
-            else:
-                if(player2_open is None):
-                    player2_open = True
-                return 6+temp3+temp4
-        else:
-            if(player2_open is None):
-                player2_open = True
-            return 6+temp3
+                results = turns*6+temp
+                turns = 0
+                return results
+    else:
+        results = turns*6 + temp
+        turns = 0
+        return results
 
 while(True):
+    if(player1 > player2):
+            ahead = "Player 1"
+    else:
+            ahead = "Player 2"
     if(checkWin(player1) or checkWin(player2)):
-        print("Winner is: ", winner)
+        print("Winner is: ", ahead)
         break
     for i in [0,1]:
         if(checkWin(player1) or checkWin(player2)):
@@ -62,10 +65,6 @@ while(True):
                 player1+=x
             else:
                 print("You have to roll a six to start")
-            if(player1 > player2):
-                winner = "Player 1"
-            else:
-                winner = "Player 2"
             print("Player_1 score:", player1)
         elif(i==1):
             y=int(input("Player_2, Enter the number you just rolled: "))
@@ -75,8 +74,4 @@ while(True):
                 player2+=y
             else:
                 print("You have to roll a six to start")
-            if(player1 > player2):
-                winner = "Player 1"
-            else:
-                winner = "Player 2"
             print("Player_2 score:", player2)
